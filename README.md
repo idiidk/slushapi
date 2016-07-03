@@ -13,4 +13,8 @@ ArrayList<SlushWorker> workers = SlushApi.getWorkers();
 workers.get(0).getName();
 
 
+DEPENDICIES:
+This project depends on the GSON library. 
+
+
 
