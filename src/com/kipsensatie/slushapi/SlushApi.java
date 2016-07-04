@@ -2,6 +2,7 @@ package com.kipsensatie.slushapi;
 
 
 
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -52,10 +53,16 @@ public class SlushApi {
 
     //Initializes the workerList and returns the ArrayList
     public static ArrayList<SlushWorker> getWorkers() {
-    	JsonObject worker;
+    	workerList.clear();
+        JsonObject worker;
 		try {
-			worker = getJsonObject().get("workers").getAsJsonObject();
-		} catch (MalformedURLException e) {
+			if(getJsonObject() != null) {
+                worker = getJsonObject().get("workers").getAsJsonObject();
+            } else {
+                return null;
+            }
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -101,16 +108,20 @@ public class SlushApi {
     
     //Getting the main Slush JSON object.
     public static JsonObject getJsonObject() throws MalformedURLException {
-       JsonObject jsonFinal;
-        if(isApiInitialized()) {
-            JsonElement slushJson = new JsonParser().parse(getJsonString(getApiUrl() + getApiKey().trim()));
-            JsonObject slushObj = slushJson.getAsJsonObject();
-            jsonFinal = slushObj;
-        	} else {
-            System.out.println("Slush API Error: API Not initialized!");
-            jsonFinal = null;
+        try {
+            JsonObject jsonFinal;
+            if (isApiInitialized()) {
+                JsonElement slushJson = new JsonParser().parse(getJsonString(getApiUrl() + getApiKey().trim()));
+                JsonObject slushObj = slushJson.getAsJsonObject();
+                jsonFinal = slushObj;
+            } else {
+                System.out.print("Slush API Error: API Not initialized!");
+                jsonFinal = null;
+            }
+            return jsonFinal;
+        } catch(Exception e) {
+            return null;
         }
-        return jsonFinal;
     }
 
     //Retruns if the API is initialized
@@ -127,15 +138,20 @@ public class SlushApi {
 			e.printStackTrace();
 			return false;
 		}
-        SlushUser.username = slushObj.get("username").getAsString();
-        SlushUser.wallet = slushObj.get("wallet").getAsString();
-        SlushUser.hashrate = slushObj.get("hashrate").getAsString();
-        SlushUser.send_threshold = slushObj.get("send_threshold").getAsString();
-        SlushUser.unconfirmed_reward = slushObj.get("unconfirmed_reward").getAsString();
-        SlushUser.confirmed_reward = slushObj.get("confirmed_reward").getAsString();
-        SlushUser.estimated_reward = slushObj.get("estimated_reward").getAsString();
-        SlushUser.total_reward =  Double.toString(Double.parseDouble(SlushUser.unconfirmed_reward) + Double.parseDouble(SlushUser.confirmed_reward));
-        return true;
+        if(slushObj != null) {
+            SlushUser.username = slushObj.get("username").getAsString();
+            SlushUser.wallet = slushObj.get("wallet").getAsString();
+            SlushUser.hashrate = slushObj.get("hashrate").getAsString();
+            SlushUser.send_threshold = slushObj.get("send_threshold").getAsString();
+            SlushUser.unconfirmed_reward = slushObj.get("unconfirmed_reward").getAsString();
+            SlushUser.confirmed_reward = slushObj.get("confirmed_reward").getAsString();
+            SlushUser.estimated_reward = slushObj.get("estimated_reward").getAsString();
+            SlushUser.total_reward = Double.toString(Double.parseDouble(SlushUser.unconfirmed_reward) + Double.parseDouble(SlushUser.confirmed_reward));
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //Getting an ArrayList containing the workers, needs to be initialized by getWorkers();
