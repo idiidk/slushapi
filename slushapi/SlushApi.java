@@ -1,12 +1,10 @@
-package com.slushapi;
+package com.kipsensatie.slushapi;
 
-import android.app.ProgressDialog;
-import android.util.Log;
+
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
 
 
 import java.io.BufferedReader;
@@ -43,20 +41,24 @@ public class SlushApi {
     //End of vars
 
 
-
+    //Sets Global API vars
     public static boolean initializeApi(String ApiKey, String ApiUrl) {
-
-        SlushApi.ApiKeyGlobal = ApiKey;
+    	SlushApi.ApiKeyGlobal = ApiKey;
         SlushApi.ApiUrlGlobal = ApiUrl;
         initializedApi = true;
         return true;
     }
 
 
-
+    //Initializes the workerList and returns the ArrayList
     public static ArrayList<SlushWorker> getWorkers() {
-
-        JsonObject worker = getJsonObject().get("workers").getAsJsonObject();
+    	JsonObject worker;
+		try {
+			worker = getJsonObject().get("workers").getAsJsonObject();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return null;
+		}
 
         for (Map.Entry<String,JsonElement> entry : worker.entrySet()) {
             String worker_name = entry.getKey().toString();
@@ -73,11 +75,13 @@ public class SlushApi {
 
 
 
+    //Uninitialize the main variables
     public static boolean uninitializeApi() {
         initializedApi = false;
         return true;
     }
-
+    
+    //Return initialized API key.
     public static String getApiKey() {
         if(isApiInitialized()) {
             return ApiKeyGlobal;
@@ -86,6 +90,7 @@ public class SlushApi {
         }
     }
 
+    //Return initialized API url
     public static String getApiUrl() {
         if(isApiInitialized()) {
             return ApiUrlGlobal;
@@ -93,32 +98,35 @@ public class SlushApi {
            return null;
         }
     }
-
-    public static JsonObject getJsonObject() {
+    
+    //Getting the main Slush JSON object.
+    public static JsonObject getJsonObject() throws MalformedURLException {
        JsonObject jsonFinal;
         if(isApiInitialized()) {
-            Log.e("Out",getApiUrl() + getApiKey());
-
             JsonElement slushJson = new JsonParser().parse(getJsonString(getApiUrl() + getApiKey().trim()));
             JsonObject slushObj = slushJson.getAsJsonObject();
             jsonFinal = slushObj;
-        } else {
-            Log.e("Slush API Error: ", "API Not initialized!!!!");
+        	} else {
+            System.out.println("Slush API Error: API Not initialized!");
             jsonFinal = null;
         }
         return jsonFinal;
     }
 
+    //Retruns if the API is initialized
     public static boolean isApiInitialized() {
-
-            return initializedApi;
-
-
-
+    	return initializedApi;
     }
-
-    public static void getUserData() {
-        JsonObject slushObj = getJsonObject();
+    
+    //Getting JSON data from User to SlushUser class. Returns true if succesfull.
+    public static boolean getUserData() {
+        JsonObject slushObj;
+		try {
+			slushObj = getJsonObject();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+			return false;
+		}
         SlushUser.username = slushObj.get("username").getAsString();
         SlushUser.wallet = slushObj.get("wallet").getAsString();
         SlushUser.hashrate = slushObj.get("hashrate").getAsString();
@@ -127,24 +135,30 @@ public class SlushApi {
         SlushUser.confirmed_reward = slushObj.get("confirmed_reward").getAsString();
         SlushUser.estimated_reward = slushObj.get("estimated_reward").getAsString();
         SlushUser.total_reward =  Double.toString(Double.parseDouble(SlushUser.unconfirmed_reward) + Double.parseDouble(SlushUser.confirmed_reward));
+        return true;
     }
 
+    //Getting an ArrayList containing the workers, needs to be initialized by getWorkers();
     public static ArrayList<SlushWorker> getWorkerList() {
-        return workerList;
+        if(workerList != null) {
+        	return workerList;
+        } else {
+        	System.out.println("Slush API Error: Worker list has not been initialized!");
+        	return null;
+        	
+        }
     }
-
+    
+    //Function for testing JSON capabilities
     public static String testJson() {
         String JsonString = getJsonString(testJson);
         if(passedJson) {
-            JsonParser jp = new JsonParser();
-
-
             JsonElement slushJson = new JsonParser().parse(JsonString);
             JsonObject testObj = slushJson.getAsJsonObject();
             resetJsonPassed();
             String s = testObj.get("userId").getAsString();
             if(s == null) {
-                Log.e("Slush Api Error: ", "STRING RESULTED NULL, THIS SHOULDN`T HAPPEN!!!!");
+                System.out.println("Slush API Error: String resulted in NULL, this shouldn`t happen!");
                 return null;
             } else {
                 return s;
@@ -156,11 +170,10 @@ public class SlushApi {
         }
     }
 
-    public static void resetJsonPassed() {
+    //Reset JSON passed
+    private static void resetJsonPassed() {
         passedJson = false;
     }
-
-
 
     //Json Handler
     private static String getJsonString(String urlString){
