@@ -13,8 +13,8 @@ Use `SlushApi.getUserData();` to get the data of the user, can be accesed by usi
 Use: `SlushApi.getWorkers();` to get an ArrayList of the workers. Simple Example: 
 ```
 ArrayList<SlushWorker> workers = SlushApi.getWorkers();
-  if(workers != null) {
-String s = workers.get(0).getName();
+if(workers != null) {
+  String s = workers.get(0).getName();
 }
 
 ```
