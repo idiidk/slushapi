@@ -7,8 +7,8 @@ A java API for the slushpool.
 
 Use `SlushApi.getUserData();` to get the data of the user, can be accesed by using the SlushUser class. For example: `SlushUser.username();`
 
----
-### WORKERS:
+--
+### Workers:
 
 Use: `SlushApi.getWorkers();` to get an ArrayList of the workers. Simple Example: 
 ```
@@ -18,10 +18,13 @@ if(workers != null) {
 }
 
 ```
----
+--
 
-### DEPENDICIES:
+### Dependicies:
 This project depends on the GSON library. 
 
+--
+###Credits:
+[Famicoman](https://github.com/Famicoman)
 
 
