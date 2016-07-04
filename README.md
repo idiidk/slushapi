@@ -1,15 +1,16 @@
 # SLUSHAPI
 A java API for the slushpool. 
 
-### Initialize API with: 
+### Initialize API: 
+--
+Use: `SlushApi.initializeApi("API-KEY", Slush JSON URL default is: "https://slushpool.com/accounts/profile/json/");` to initialize the api. Must be done before calling any other function.
 
-`SlushApi.initializeApi("API-KEY", Slush JSON URL default is: "https://slushpool.com/accounts/profile/json/");`
-
+###User:
+--
 Use `SlushApi.getUserData();` to get the data of the user, can be accesed by using the SlushUser class. For example: `SlushUser.username();`
 
---
 ### Workers:
-
+--
 Use: `SlushApi.getWorkers();` to get an ArrayList of the workers. Simple Example: 
 ```
 ArrayList<SlushWorker> workers = SlushApi.getWorkers();
@@ -21,10 +22,11 @@ if(workers != null) {
 
 
 ### Dependicies:
+--
 This project depends on the GSON library. 
 
---
 ###Credits:
+--
 [Famicoman](https://github.com/Famicoman)
 
 
