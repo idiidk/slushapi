@@ -1,7 +1,7 @@
 package com.kipsensatie.slushapi;
 
 /**
- * Created by Kipsensatie on 3-7-2016.
+ * Created by Kipsensatie on 5-7-2016.
  */
 public class SlushWorker {
     private String name;
@@ -11,17 +11,33 @@ public class SlushWorker {
     private int hashrate;
     private Boolean alive;
 
-    public SlushWorker(String n, int l, String sc, int sh, int h, Boolean a){
+    public SlushWorker(String n,int ls,String s,int sh,int hr,boolean a) {
         name = n;
-        last_share = l;
-        score = sc;
+        last_share = ls;
+        score = s;
         shares = sh;
-        hashrate = h;
+        hashrate = hr;
         alive = a;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public int getShares() {
+        return shares;
+    }
+
+    public int getHashrate() {
+        return hashrate;
+    }
+
+    public Boolean getAlive() {
+        return alive;
     }
 
     public String getLastShare(){
@@ -57,23 +73,4 @@ public class SlushWorker {
 
         return text.toString() + "ago";
     }
-
-
-    public String getScore(){
-        return score;
-    }
-
-    public String getShares(){
-        return Integer.toString(shares);
-    }
-
-    public String getHashrate(){
-        return Integer.toString(hashrate);
-    }
-
-    public String getAlive(){
-        return String.valueOf(alive);
-    }
-
-
 }
