@@ -7,7 +7,7 @@ A java API for the slushpool.
 
 Use: `SlushApi api = new SlushApi("API-URL (Default is: https://slushpool.com/accounts/profile/json/)","API-KEY");` to initialize the api.
 
-## User:
+## Users:
 
 Use `SlushUser user = new SlushUser(api);` to initialize a user. To get the data of the user call: `user.getUserData()` To access this data use the following functions:
 ```
