@@ -9,12 +9,23 @@ Use: `SlushApi api = new SlushApi("API-URL (Default is: https://slushpool.com/ac
 
 ## User:
 
-Use `SlushUser user = new SlushUser(api);` to initialize a user. To get the data of the user call: `user.getUserData()` To access this data you can call for example: `user.getUsername()`
+Use `SlushUser user = new SlushUser(api);` to initialize a user. To get the data of the user call: `user.getUserData()` To access this data use the following functions:
+```
+user.getHashrate();
+user.getConfirmedReward();
+user.getEstimatedReward();
+user.getSendThreshold();
+user.getTotalReward();
+user.getUnconfirmedReward();
+user.getUsername();
+user.getWallet()
+```
 
 ## Workers:
 
 Use: `SlushWorkerManager swm = new SlushWorkerManager(api);` to initialize the Worker Manager class. You can use this class to get the data of a worker, for example:
 ```
+SlushWorkerManager swm = new SlushWorkerManager(api);
 ArrayList<String> data = new ArrayList<String>();
     for (SlushWorker worker : swm.getWorkers()) {
     data.add(worker.getName());
