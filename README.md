@@ -5,22 +5,27 @@ A java API for the slushpool.
 
 ## Initialize API: 
 
-Use: `SlushApi.initializeApi("API-KEY", Slush JSON URL default is: "https://slushpool.com/accounts/profile/json/");` to initialize the api. Must be done before calling any other function.
+Use: `SlushApi api = new SlushApi("API-URL (Default is: https://slushpool.com/accounts/profile/json/)","API-KEY");` to initialize the api.
 
 ## User:
 
-Use `SlushApi.getUserData();` to get the data of the user, can be accesed by using the SlushUser class. For example: `SlushUser.username();`
+Use `SlushUser user = new SlushUser(api);` to initialize a user. To get the data of the user call: `user.getUserData()` To access this data you can call for example: `user.getUsername()`
 
 ## Workers:
 
-Use: `SlushApi.getWorkers();` to get an ArrayList of the workers. Simple Example: 
+Use: `SlushWorkerManager swm = new SlushWorkerManager(api);` to initialize the Worker Manager class. You can use this class to get the data of a worker, for example:
 ```
-ArrayList<SlushWorker> workers = SlushApi.getWorkers();
-if(workers != null) {
-  String s = workers.get(0).getName();
+ArrayList<String> data = new ArrayList<String>();
+    for (SlushWorker worker : swm.getWorkers()) {
+    data.add(worker.getName());
+    data.add(worker.getAlive().toString());
+    data.add(String.valueOf(worker.getHashrate()));
+    data.add(worker.getLastShare());
+    data.add(worker.getScore());
+    data.add(String.valueOf(worker.getShares()));
 }
-
 ```
+To get all the data of the user in an ArrayList.
 
 ## Dependicies:
 
