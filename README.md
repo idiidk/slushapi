@@ -38,7 +38,7 @@ ArrayList<String> data = new ArrayList<String>();
 ```
 To get all the data of the user in an ArrayList.
 
-## Dependicies:
+## Dependencies:
 
 This project depends on the GSON library. 
 
